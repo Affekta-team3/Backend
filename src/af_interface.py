@@ -26,8 +26,11 @@ if __name__ == "__main__":
     code_text = """
 class Solution:
     def print_str(self, input_str):
-        return f"Hello, {input_str}"
+        return f"Hello, {input_str}!"
     """
     res = interface.execute(code_text, "72a6f07b-4055-4109-baf3-d907cfbf3ae5")
+    # res = interface.get_data("problem", "72a6f07b-4055-4109-baf3-d907cfbf3ae5")
+    # record = {"problemId": "72a6f07b-4055-4109-baf3-d907cfbf3ae5", "codeText": code_text, "status": 0, "result": "", "runtime": 1, "memory": 1}
+    # res = interface.insert_submission(record)
     print(res)
 

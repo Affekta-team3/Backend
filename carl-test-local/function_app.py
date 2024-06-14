@@ -4,9 +4,11 @@ import subprocess
 from azure.functions.decorators.core import DataType
 import uuid
 import json
+import os
+import random
+
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
-service_url_prefix = "https://carl-test.azurewebsites.net/api/"
 
 
 @app.route(route="codeExecute/{sample_path}")
@@ -26,7 +28,7 @@ def codeExecute(req: func.HttpRequest, inputblob: str) -> func.HttpResponse:
             code_text = req_body.get('code_text')
 
     if code_text:
-        file_path = "/tmp/code_to_run.py"
+        file_path = f"/tmp/code_{random.randint(0,99)}.py"
 
         # Write the code to a .py file
         with open(file_path, "w") as code_file:
@@ -38,13 +40,16 @@ def codeExecute(req: func.HttpRequest, inputblob: str) -> func.HttpResponse:
 
         # Execute the .py file and capture the output
         try:
-            # result = subprocess.run(["python3", file_path], capture_output=True, text=True, check=True)
             result = subprocess.run(["python3", file_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
             output = result.stdout
             print(output)
         except subprocess.CalledProcessError as e:
             output = e.stderr
             print(output)
+        finally:
+            if os.path.exists(file_path):
+                            os.remove(file_path)
+                            logging.info(f"File {file_path} deleted")
         # Return the output as the response
         return func.HttpResponse(output, status_code=200)
     else:
@@ -52,6 +57,57 @@ def codeExecute(req: func.HttpRequest, inputblob: str) -> func.HttpResponse:
             "Please pass a code parameter in the query string or in the request body",
             status_code=400
         )
+
+# @app.route(route="codeExecute/{sample_path}")
+# @app.blob_input(arg_name="inputblob",
+#                 path="problem-samples/{sample_path}",
+#                 connection="AzureWebJobsStorage")
+# def codeExecute(req: func.HttpRequest, inputblob: str) -> func.HttpResponse:
+#     logging.info('Python HTTP trigger function processed a request.')
+#
+#     code_text = req.params.get('code_text')
+#     if not code_text:
+#         try:
+#             req_body = req.get_json()
+#         except ValueError:
+#             pass
+#         else:
+#             code_text = req_body.get('code_text')
+#
+#     if code_text:
+#         file_path = f"/tmp/code_{random.randint(0,99)}.py"
+#
+#         # Write the code to a .py file
+#         with open(file_path, "w") as code_file:
+#             logging.info(f"File {file_path} created")
+#             code_file.write(code_text)
+#             code_file.write("\n")
+#             code_file.write(inputblob)
+#             code_file.write("\n")
+#
+#         process = None
+#         # Execute the .py file and capture the output
+#         try:
+#             interpreter = ".venv/bin/python"
+#             # result = subprocess.run(["python3", file_path], capture_output=True, text=True, check=True)
+#             process = subprocess.run([interpreter, file_path], capture_output=True, text=True, check=True)
+#             output = process.stdout
+#             print(output)
+#         except subprocess.CalledProcessError as e:
+#             output = e.stderr
+#             print(output)
+#         finally:
+#             if os.path.exists(file_path):
+#                 os.remove(file_path)
+#                 logging.info(f"File {file_path} deleted")
+#
+#         # Return the output as the response
+#         return func.HttpResponse(output, status_code=200)
+#     else:
+#         return func.HttpResponse(
+#             "Please pass a code parameter in the query string or in the request body",
+#             status_code=400
+#         )
 
 
 @app.route(route="getProblem/{problemId}", auth_level=func.AuthLevel.ANONYMOUS)
@@ -88,10 +144,11 @@ def insertSubmission(req: func.HttpRequest, submissionItems: func.Out[func.SqlRo
 
     query = req.get_json()
     query.update({"Id": str(uuid.uuid4())})
+    print(query.get('problemId'))
 
     if submissionItems:
         submissionItems.set(func.SqlRow(query))
-        return func.HttpResponse(f"source code inserted for problem")
+        return func.HttpResponse(f"source code inserted for problem {query.get('problemId')}")
     else:
         return func.HttpResponse(
                     "Please pass a name on the query string or in the request body",
