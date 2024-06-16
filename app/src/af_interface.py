@@ -22,7 +22,8 @@ class AzureFunctionInterface(object):
 
 
 if __name__ == "__main__":
-    interface = AzureFunctionInterface()
+    url = "http://localhost:7071/api/"
+    interface = AzureFunctionInterface(url)
     code_text = """
 class Solution:
     def print_str(self, input_str):

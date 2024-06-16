@@ -18,3 +18,6 @@ print(round((end-start).total_seconds() * 1000))
 
 memory_usage_mb = (end_memory - start_memory) / (1024 * 1024)  # in megabytes
 print(f"Memory usage: {memory_usage_mb:.2f} MB")
+
+print(f"{os.path.dirname(__file__)}")
+
