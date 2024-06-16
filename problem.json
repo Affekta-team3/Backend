@@ -1,0 +1,20 @@
+[
+  {
+    "Id": "d5516315-3dec-4d7a-959b-021cfe99bae3",
+    "title": "Sample Problem 2",
+    "description": "This is a description for problem 2",
+    "inputFormat": "Input format for problem 2",
+    "outputFormat": "Output format for problem 2",
+    "samplePath": "/samples/sample2",
+    "difficulty": "2"
+  },
+  {
+    "Id": "975beb5f-dac3-4451-9162-185fef491c88",
+    "title": "Sample Problem 1",
+    "description": "This is a description for problem 1",
+    "inputFormat": "Input format for problem 1",
+    "outputFormat": "Output format for problem 1",
+    "samplePath": "/samples/sample1",
+    "difficulty": "1"
+  }
+]
