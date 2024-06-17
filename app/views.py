@@ -39,6 +39,18 @@ def evaluate_submission():
     problem_id = data.get('problem_id')
     response = azure_interface.execute(code_text, problem_id)
     return jsonify(response)
+
+@app.route('/api/problems', methods=['GET'])
+def get_all_problems():
+    try:
+        # Retrieve all problems from the database
+        problems = Problem.query.all()
+        # Format the problems into a list of dictionaries
+        problems_list = [{"problem_id": problem.id, "title": problem.title, "difficulty": problem.difficulty} for problem in problems]
+        return jsonify(problems_list)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 '''
 @app.route('/api/animations/accepted', methods=['POST'])
 def trigger_accept_animation():

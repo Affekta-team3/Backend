@@ -16,7 +16,7 @@ class Problem(db.Model):
         return f'<Problem {self.title}>'
 
 class Submit(db.Model):
-    __tablename__ = 'submit'
+    __tablename__ = 'submission'
     
     id = db.Column(db.String(36), primary_key=True, default=str(uuid.uuid4()))
     problem_id = db.Column(db.String(36), db.ForeignKey('problem.id'), nullable=False)
