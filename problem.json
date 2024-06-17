@@ -1,20 +1,20 @@
 [
   {
-    "id": "3E859E05-2D1E-4AE0-80C1-1CA6352C63A0",
-    "title": "Sample Problem 1",
-    "description": "This is a description for problem 1",
-    "input_format": "Input format for problem 1",
-    "output_format": "Output format for problem 1",
-    "sample_path": "/samples/sample1",
-    "difficulty": "1"
-  },
-  {
-    "id": "8FD4C0FF-12F4-43C6-B3DB-E917986C6EC2",
+    "id": "0A7E4D7B-FA6F-4D2A-8BC9-58FFF17C57C8",
     "title": "Sample Problem 2",
     "description": "This is a description for problem 2",
     "input_format": "Input format for problem 2",
     "output_format": "Output format for problem 2",
-    "sample_path": "/samples/sample2",
+    "sample_path": "0A7E4D7B-FA6F-4D2A-8BC9-58FFF17C57C8",
     "difficulty": "2"
+  },
+  {
+    "id": "6189216C-0730-4059-AE8E-042C9FF5171A",
+    "title": "Sample Problem 1",
+    "description": "This is a description for problem 1",
+    "input_format": "Input format for problem 1",
+    "output_format": "Output format for problem 1",
+    "sample_path": "6189216C-0730-4059-AE8E-042C9FF5171A",
+    "difficulty": "1"
   }
 ]

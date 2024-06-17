@@ -46,20 +46,15 @@ def get_all_problems():
         # Retrieve all problems from the database
         problems = Problem.query.all()
         # Format the problems into a list of dictionaries
-        problems_list = [{"problem_id": problem.id, "title": problem.title, "difficulty": problem.difficulty} for problem in problems]
+        problems_list = [{
+            "problem_id": problem.id,
+            "title": problem.title,
+            "description": problem.description,
+            "input_format": problem.input_format,
+            "output_format": problem.output_format,
+            "difficulty": problem.difficulty
+        } for problem in problems]
         return jsonify(problems_list)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-'''
-@app.route('/api/animations/accepted', methods=['POST'])
-def trigger_accept_animation():
-    data = request.get_json()
-    response = trigger_animation(data)
-    return jsonify(response)
-
-@app.route('/api/hints/<submission_id>', methods=['GET'])
-def get_submission_hints(submission_id):
-    response = get_hints(submission_id)
-    return jsonify(response)
-'''
