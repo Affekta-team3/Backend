@@ -2,7 +2,7 @@ from flask import render_template, request, jsonify
 from app import app
 from app.controllers.ide import *
 from app.src.af_interface import AzureFunctionInterface  
-from .models import Problem
+from .models import Problem, Submission, User
 
 # Initialize the AzureFunctionInterface
 azure_interface = AzureFunctionInterface()
@@ -58,3 +58,47 @@ def get_all_problems():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/api/users/<userId>', methods=['GET'])
+def get_user_profile(userId):
+    try:
+        # Retrieve the user from the database
+        user = User.query.filter_by(userId=userId).first()
+        if user is None:
+            return jsonify({"error": "User not found"}), 404
+        
+        # Format the user information into a dictionary
+        user_info = {
+            "userId": user.userId,
+            "username": user.username,
+            "email": user.email,
+            "totalSubmissions": user.totalSubmissions,
+            "successfulSubmissions": user.successfulSubmissions
+        }
+        return jsonify(user_info)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/problems/<problemId>/acceptance', methods=['GET'])
+def get_problem_acceptance_rate(problemId):
+    try:
+        # Retrieve the problem from the database
+        problem = Problem.query.filter_by(id=problemId).first()
+        if problem is None:
+            return jsonify({"error": "Problem not found"}), 404
+        
+        # Calculate the acceptance rate
+        if problem.totalSubmissions == 0:
+            acceptance_rate = 0.0
+        else:
+            acceptance_rate = (problem.successfulSubmissions / problem.totalSubmissions) * 100
+        
+        # Format the acceptance rate information into a dictionary
+        acceptance_info = {
+            "problemId": problem.id,
+            "acceptanceRate": acceptance_rate,
+            "totalSubmissions": problem.totalSubmissions,
+            "successfulSubmissions": problem.successfulSubmissions
+        }
+        return jsonify(acceptance_info)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

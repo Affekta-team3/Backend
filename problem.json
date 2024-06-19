@@ -6,7 +6,20 @@
     "input_format": "Input format for problem 2",
     "output_format": "Output format for problem 2",
     "sample_path": "0A7E4D7B-FA6F-4D2A-8BC9-58FFF17C57C8",
-    "difficulty": "2"
+    "difficulty": "2",
+    "totalSubmissions": "0",
+    "successfulSubmissions": "0"
+  },
+  {
+    "id": "11A2BF99-EC1F-4172-BD1A-CA3608836E24",
+    "title": "Max of an Array",
+    "description": "Calculate the maximum of the given array",
+    "input_format": "array",
+    "output_format": "integer",
+    "sample_path": "",
+    "difficulty": "1",
+    "totalSubmissions": "0",
+    "successfulSubmissions": "0"
   },
   {
     "id": "6189216C-0730-4059-AE8E-042C9FF5171A",
@@ -15,6 +28,8 @@
     "input_format": "Input format for problem 1",
     "output_format": "Output format for problem 1",
     "sample_path": "6189216C-0730-4059-AE8E-042C9FF5171A",
-    "difficulty": "1"
+    "difficulty": "1",
+    "totalSubmissions": "0",
+    "successfulSubmissions": "0"
   }
 ]
