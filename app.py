@@ -10,7 +10,13 @@ migrate = Migrate(app, db)
 
 from app import models, views
 
-try:
-    app.logger.info("Database connected successfully.")
-except Exception as e:
-    app.logger.error(f"Database connection failed: {e}")
+def check_db_connection():
+    try:
+        db.session.execute('SELECT 1')
+        app.logger.info("Database connected successfully.")
+    except Exception as e:
+        app.logger.error(f"Database connection failed: {e}")
+
+if __name__ == "__main__":
+    check_db_connection()
+    app.run()

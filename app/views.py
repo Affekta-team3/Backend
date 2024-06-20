@@ -1,5 +1,5 @@
 from flask import render_template, request, jsonify
-from app import app
+from app import app, db
 from app.controllers.ide import *
 from app.src.af_interface import AzureFunctionInterface  
 from .models import Problem, Submission, User
@@ -34,11 +34,44 @@ def get_submission(submission_id):
 
 @app.route('/api/evaluate', methods=['POST'])
 def evaluate_submission():
-    data = request.get_json()
-    code_text = data.get('code_text')
-    problem_id = data.get('problem_id')
-    response = azure_interface.execute(code_text, problem_id)
-    return jsonify(response)
+    try:
+        data = request.get_json()
+        code_text = data.get('code_text')
+        problem_id = data.get('problem_id')
+        user_id = '444D6FB7-FAE7-4472-8B2C-B34135634633' 
+
+        short_problem_id = problem_id[:8]
+        # Call the Azure function to execute the code
+        response = azure_interface.execute(code_text, short_problem_id)
+        
+        # Retrieve the problem from the database
+        problem = Problem.query.filter_by(id=problem_id).first()
+        if problem is None:
+            return jsonify({"error": "Problem not found"}), 404
+        
+        # Retrieve the user from the database
+        user = User.query.filter_by(userId=user_id).first()
+        if user is None:
+            return jsonify({"error": "User not found"}), 404
+
+        # Increment totalSubmissions for both Problem and User
+        problem.totalSubmissions += 1
+        user.totalSubmissions += 1
+
+        # If the Azure function returned a successful response, increment successfulSubmissions
+        #print(response)
+        
+        if "PASS" in response:
+            problem.successfulSubmissions += 1
+            user.successfulSubmissions += 1
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/api/problems', methods=['GET'])
 def get_all_problems():

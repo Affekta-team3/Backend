@@ -1,0 +1,37 @@
+[
+  {
+    "userId": "444D6FB7-FAE7-4472-8B2C-B34135634633",
+    "username": "user1",
+    "email": "user1@example.com",
+    "totalSubmissions": "10",
+    "successfulSubmissions": "5"
+  },
+  {
+    "userId": "48704226-4B68-49FA-8EE0-8EB24E798844",
+    "username": "user2",
+    "email": "user2@example.com",
+    "totalSubmissions": "20",
+    "successfulSubmissions": "10"
+  },
+  {
+    "userId": "6531B009-595E-4ED1-9AFD-3B240A0D6F21",
+    "username": "user3",
+    "email": "user3@example.com",
+    "totalSubmissions": "30",
+    "successfulSubmissions": "15"
+  },
+  {
+    "userId": "97C9F145-AF12-4D17-97D9-453A7EA3A1D1",
+    "username": "user4",
+    "email": "user4@example.com",
+    "totalSubmissions": "40",
+    "successfulSubmissions": "20"
+  },
+  {
+    "userId": "BCF56F31-C525-42CA-BDE2-BF2AE0939B37",
+    "username": "user5",
+    "email": "user5@example.com",
+    "totalSubmissions": "50",
+    "successfulSubmissions": "25"
+  }
+]
