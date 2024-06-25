@@ -9,7 +9,6 @@ class Problem(db.Model):
     description = db.Column(db.String(200), nullable=True)
     input_format = db.Column(db.String(100), nullable=True)
     output_format = db.Column(db.String(100), nullable=True)
-    sample_path = db.Column(db.String(200), nullable=False)
     difficulty = db.Column(db.Integer, nullable=False)
     totalSubmissions = db.Column(db.Integer, nullable=False, default=0)
     successfulSubmissions = db.Column(db.Integer, nullable=False, default=0)

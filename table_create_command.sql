@@ -13,7 +13,6 @@ CREATE TABLE dbo.problem (
     description NVARCHAR (200) NULL,
     input_format NVARCHAR (100) NULL,
     output_format NVARCHAR (100) NULL,
-    sample_path NVARCHAR (36) NOT NULL,
     difficulty INT NOT NULL,
     totalSubmissions INT NOT NULL DEFAULT 0,
     successfulSubmissions INT NOT NULL DEFAULT 0
@@ -21,14 +20,14 @@ CREATE TABLE dbo.problem (
 
 -- Create the dbo.submission table
 CREATE TABLE dbo.submission (
-    Id NVARCHAR (36) PRIMARY KEY DEFAULT NEWID (),
-    problemId NVARCHAR (36) NOT NULL,
+    id NVARCHAR (36) PRIMARY KEY DEFAULT NEWID (),
+    problem_id NVARCHAR (36) NOT NULL,
     code_text NVARCHAR (500) NOT NULL,
     status INT NOT NULL,
     result NVARCHAR (200) NOT NULL,
     runtime INT NOT NULL,
     memory INT NOT NULL,
-    FOREIGN KEY (problemId) REFERENCES dbo.problem (id)
+    FOREIGN KEY (problem_id) REFERENCES dbo.problem (id)
 );
 
 -- Insert data into the dbo.problem table with sample_path same as id
@@ -54,7 +53,6 @@ VALUES (
         'This is a description for problem 1',
         'Input format for problem 1',
         'Output format for problem 1',
-        @id1,
         1,
         10,
         5
@@ -65,7 +63,6 @@ VALUES (
         'This is a description for problem 2',
         'Input format for problem 2',
         'Output format for problem 2',
-        @id2,
         2,
         20,
         10
@@ -87,8 +84,8 @@ WHERE
 -- Insert data into the dbo.submission table
 INSERT INTO
     dbo.submission (
-        Id,
-        problemId,
+        id,
+        problem_id,
         code_text,
         status,
         result,
