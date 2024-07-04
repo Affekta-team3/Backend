@@ -1,8 +1,7 @@
 from flask import render_template, request, jsonify
 from app import app, db
-from app.controllers.ide import *
 from app.src.af_interface import AzureFunctionInterface  
-from .models import Problem, Submission, User
+from .models import Problem, Submission, User, Example
 
 # Initialize the AzureFunctionInterface
 azure_interface = AzureFunctionInterface()
@@ -133,5 +132,39 @@ def get_problem_acceptance_rate(problemId):
             "successfulSubmissions": problem.successfulSubmissions
         }
         return jsonify(acceptance_info)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/problems/<problemId>/examples', methods=['GET'])
+def get_problem_examples(problemId):
+    try:
+        # Retrieve the problem and its associated examples from the database
+        problem = Problem.query.filter_by(id=problemId).first()
+        if problem is None:
+            return jsonify({"error": "Problem not found"}), 404
+
+        # Retrieve examples for the problem
+        examples = Example.query.filter_by(problem_id=problemId).all()
+        if not examples:
+            return jsonify({"message": "No examples available for this problem"}), 200
+
+        # Format the examples into a list of dictionaries
+        examples_list = []
+        for example in examples:
+            examples_list.append({
+                "id": example.id,
+                "input": example.input,
+                "output": example.output,
+                "explanation": example.explanation if example.explanation else "No explanation provided"
+            })
+
+        # Create a response dictionary that includes problem details and examples
+        response = {
+            "problemId": problem.id,
+            "title": problem.title,
+            "description": problem.description,
+            "examples": examples_list
+        }
+        return jsonify(response)
     except Exception as e:
         return jsonify({"error": str(e)}), 500

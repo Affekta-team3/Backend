@@ -18,6 +18,16 @@ CREATE TABLE dbo.problem (
     successfulSubmissions INT NOT NULL DEFAULT 0
 );
 
+CREATE TABLE example (
+    id VARCHAR(36) NOT NULL,
+    problem_id NVARCHAR (36) NOT NULL,
+    input NVARCHAR (500) NOT NULL,
+    output NVARCHAR (500) NOT NULL,
+    explanation NVARCHAR (500) NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (problem_id) REFERENCES dbo.problem (id)
+);
+
 -- Create the dbo.submission table
 CREATE TABLE dbo.submission (
     id NVARCHAR (36) PRIMARY KEY DEFAULT NEWID (),
@@ -118,3 +128,43 @@ CREATE TABLE dbo.[user] (
     totalSubmissions INT NOT NULL DEFAULT 0,
     successfulSubmissions INT NOT NULL DEFAULT 0
 );
+
+-- Insert dummy data into the 'example' table
+INSERT INTO
+    example (
+        id,
+        problem_id,
+        input,
+        output,
+        explanation
+    )
+SELECT NEWID (), id, 'Input data 1', 'Output data 1', 'Explanation for example 1'
+FROM problem
+WHERE
+    id IN (
+        SELECT TOP 1 id
+        FROM problem
+        ORDER BY NEWID ()
+    ) -- Adjust this subquery as needed
+
+UNION ALL
+
+SELECT NEWID (), id, 'Input data 2', 'Output data 2', 'Explanation for example 2'
+FROM problem
+WHERE
+    id IN (
+        SELECT TOP 1 id
+        FROM problem
+        ORDER BY NEWID ()
+    )
+
+UNION ALL
+
+SELECT NEWID (), id, 'Input data 3', 'Output data 3', 'Explanation for example 3'
+FROM problem
+WHERE
+    id IN (
+        SELECT TOP 1 id
+        FROM problem
+        ORDER BY NEWID ()
+    );

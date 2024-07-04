@@ -43,3 +43,17 @@ class User(db.Model):
     
     def __repr__(self):
         return f'<User {self.username}>'
+
+class Example(db.Model):
+    __tablename__ = 'example'
+
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    problem_id = db.Column(db.String(36), db.ForeignKey('problem.id'), nullable=False)
+    input = db.Column(db.String(500), nullable=False)
+    output = db.Column(db.String(500), nullable=False)
+    explanation = db.Column(db.String(500), nullable=True)
+
+    problem = db.relationship('Problem', backref=db.backref('examples', lazy=True))
+
+    def __repr__(self):
+        return f'<Example {self.id}>'
