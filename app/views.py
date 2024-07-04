@@ -153,16 +153,11 @@ def get_problem_examples(problemId):
         for example in examples:
             examples_list.append({
                 "id": example.id,
-                "input": example.input,
-                "output": example.output,
                 "explanation": example.explanation if example.explanation else "No explanation provided"
             })
 
         # Create a response dictionary that includes problem details and examples
         response = {
-            "problemId": problem.id,
-            "title": problem.title,
-            "description": problem.description,
             "examples": examples_list
         }
         return jsonify(response)
