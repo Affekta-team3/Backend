@@ -153,6 +153,8 @@ def get_problem_examples(problemId):
         for example in examples:
             examples_list.append({
                 "id": example.id,
+                "input": example.input,
+                "output": example.output,
                 "explanation": example.explanation if example.explanation else "No explanation provided"
             })
 
